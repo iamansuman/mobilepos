@@ -36,7 +36,7 @@ dependencies:
   http: any
   sqflite: ^2.3.2
   just_audio: ^0.9.37
-  barcode_scan2: ^4.3.3
+  flutter_barcode_scanner: any
   
 
 dev_dependencies:
