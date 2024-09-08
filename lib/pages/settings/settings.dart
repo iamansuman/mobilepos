@@ -10,6 +10,13 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Scaffold(
+      body: Center(
+        child: Text(
+          "In Development",
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
   }
 }
