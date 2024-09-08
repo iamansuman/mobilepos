@@ -10,6 +10,16 @@ class Inventory extends StatefulWidget {
 class _InventoryState extends State<Inventory> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'addtoinventory',
+        icon: const Icon(Icons.add),
+        label: const Text("Add Item"),
+        onPressed: () async {
+          final dynamic status = await Navigator.pushNamed(context, '/addtoinventory');
+          if (status is String && status == 'success') setState(() {});
+        },
+      ),
+    );
   }
 }
