@@ -32,8 +32,11 @@ dependencies:
     sdk: flutter
   cupertino_icons: any
   path: any
+  intl: any
   http: any
   sqflite: ^2.3.2
+  just_audio: ^0.9.37
+  barcode_scan2: ^4.3.3
   
 
 dev_dependencies:
