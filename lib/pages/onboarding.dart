@@ -11,17 +11,17 @@ class _OnBoardingState extends State<OnBoarding> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
-        return Future.value(false);
-      },
-      child: const Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Welcome to mobile PoS!",
-            style: TextStyle(fontSize: 30),
-          ),
-        ],
+      onWillPop: () => Future.value(false),
+      child: const Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Welcome to mobile PoS!",
+              style: TextStyle(fontSize: 30),
+            ),
+          ],
+        ),
       ),
     );
   }
