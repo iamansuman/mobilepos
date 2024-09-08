@@ -11,13 +11,13 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool newUser = false;
+    bool isNewUser = false;
     //TODO: New User logic
     return MaterialApp(
       title: 'Mobile PoS',
       theme: ThemeData(useMaterial3: true),
       onGenerateRoute: RouteGenerator.generateRoute,
-      initialRoute: (newUser) ? '/onboarding' : '/',
+      initialRoute: (isNewUser) ? '/onboarding' : '/',
     );
   }
 }
