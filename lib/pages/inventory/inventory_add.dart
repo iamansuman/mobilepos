@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobilepos/data_structure.dart';
 import 'package:mobilepos/posdatabase.dart';
 import 'package:mobilepos/get_barcode.dart';
+import 'package:mobilepos/get_barcode_metadata.dart';
 import 'package:mobilepos/alertdialog.dart';
 
 class AddInventory extends StatefulWidget {
@@ -54,9 +55,12 @@ class _AddInventoryState extends State<AddInventory> {
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.camera_alt_rounded),
                   onPressed: () async {
-                    int? barcode = await getBarcodeData(context);
+                    String? barcode = await getBarcodeData(context);
                     if (barcode != null) {
                       _barcodeTextController.text = barcode.toString();
+                      final Map<String, String> barcodeMetaData = await getBarcodeMetadata(barcode);
+                      _itemNameTextController.text = barcodeMetaData['product_name'] ?? '';
+                      _unitQuantityTextController.text = barcodeMetaData['quantity'] ?? '';
                     }
                   },
                 ),
@@ -89,7 +93,8 @@ class _AddInventoryState extends State<AddInventory> {
               },
             ),
             const SizedBox(height: 5),
-            descTextBox("Quantity of each individual item in kg, g, L, ml, m, cm, mm, etc"),
+            descTextBox(
+                "Quantity of each individual item in kg, g, lbs, ton, L, ml, gallons, ounce, pint, m, cm, mm, feet, inches etc"),
             descTextBox("In case of items which are sold in terms of units, mention '1 unit'"),
             const SizedBox(height: 30),
             TextFormField(
@@ -148,7 +153,7 @@ class _AddInventoryState extends State<AddInventory> {
               child: const Text("Add to Inventory"),
               onPressed: () async {
                 if (_formKey.currentState!.validate() &&
-                    await PoSDatabase.itemExistsWithBarcode(int.parse(_barcodeTextController.text))) {
+                    await PoSDatabase.itemExistsWithBarcode(_barcodeTextController.text.toString())) {
                   if (context.mounted) {
                     alertUser(context, "Item already exists in Inventory", cancelButtonText: "Dismiss");
                   }
@@ -156,7 +161,7 @@ class _AddInventoryState extends State<AddInventory> {
                   int status = await PoSDatabase.addItemToInventory(
                     Item(
                       itemName: _itemNameTextController.text,
-                      barcode: int.parse(_barcodeTextController.text),
+                      barcode: _barcodeTextController.text.toString(),
                       price: double.parse(_unitPriceTextController.text),
                       singleUnitQuantity: _unitQuantityTextController.text,
                       quantity: int.parse(_stockQuantityTextController.text),
