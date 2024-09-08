@@ -1,14 +1,14 @@
 class Sale {
   final DateTime timeOfSale;
   final String receiptNumber;
-  final Map<int, Item> saleItems;
+  final Map<String, Item> saleItems;
   double totalAmount;
   Sale({required this.timeOfSale, required this.receiptNumber, required this.saleItems, required this.totalAmount});
 }
 
 class Item {
   final String itemName;
-  final int barcode;
+  final String barcode;
   final double price;
   String singleUnitQuantity;
   int quantity;
@@ -42,7 +42,7 @@ class Item {
 
   factory Item.fromMap(Map<String, dynamic> map) => Item(
         itemName: map['itemname'] as String,
-        barcode: map['barcode'] as int,
+        barcode: map['barcode'] as String,
         price: map['price'] as double,
         singleUnitQuantity: map['single_unit_quantity'] as String,
         quantity: map['stock_quantity'] as int,

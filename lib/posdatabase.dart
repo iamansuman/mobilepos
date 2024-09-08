@@ -23,7 +23,7 @@ class PoSDatabase {
   Future _createDB(sql.Database db, int version) async {
     await db.execute('''
     CREATE TABLE IF NOT EXISTS ${_tables[DBTables.inventory]}(
-      barcode INTEGER PRIMARY KEY,
+      barcode TEXT PRIMARY KEY,
       itemname TEXT,
       price REAL,
       single_unit_quantity TEXT,
@@ -59,7 +59,7 @@ class PoSDatabase {
     );
   }
 
-  static Future<bool> itemExistsWithBarcode(int barcode) async {
+  static Future<bool> itemExistsWithBarcode(String barcode) async {
     final db = await instance.database;
     final result = await db.query(
       _tables[DBTables.inventory]!,
@@ -70,7 +70,7 @@ class PoSDatabase {
     return result.isNotEmpty;
   }
 
-  static Future<Item?> getItemInfoFromInventory(int barcode) async {
+  static Future<Item?> getItemInfoFromInventory(String barcode) async {
     final db = await instance.database;
     final result = await db.query(_tables[DBTables.inventory]!,
         where: 'barcode = ?', whereArgs: [barcode], orderBy: 'last_modified DESC', limit: 1);
@@ -91,7 +91,7 @@ class PoSDatabase {
     }
   }
 
-  static void updateItemQuantityInInventory(int barcode, int newQuantity) async {
+  static void updateItemQuantityInInventory(String barcode, int newQuantity) async {
     final db = await instance.database;
     db.update(
       _tables[DBTables.inventory]!,
@@ -101,7 +101,7 @@ class PoSDatabase {
     );
   }
 
-  static Future<int> removeItemFromInventory(int barcode) async {
+  static Future<int> removeItemFromInventory(String barcode) async {
     final db = await instance.database;
     return await db.delete(_tables[DBTables.inventory]!, where: 'barcode = ?', whereArgs: [barcode]);
   }
