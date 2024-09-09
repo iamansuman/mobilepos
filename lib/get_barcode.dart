@@ -9,7 +9,7 @@ Future<String?> getBarcodeData(BuildContext context) async {
   dynamic barcode = await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.BARCODE);
   await player.setAudioSource(AudioSource.asset('assets/beep.mp3'));
 
-  if (isValidBarcode(int.tryParse(barcode))) {
+  if (isValidBarcode(int.tryParse(barcode) != null ? barcode : null)) {
     player.play();
     return barcode.toString();
   } else {
