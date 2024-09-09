@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobilepos/pages/inventory/inventory.dart';
 import 'package:mobilepos/pages/sales/sales.dart';
 import 'package:mobilepos/pages/settings/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   final int selScreen;
@@ -14,11 +15,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   static const List<Widget> screenNavs = [Inventory(), Sales(), Settings()];
   int currScreen = 1;
+  String shopName = "Your Shop";
+
+  Future<void> getShopName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() => shopName = prefs.getString('SHOP_NAME') ?? shopName);
+  }
 
   @override
   void initState() {
     super.initState();
     currScreen = widget.selScreen;
+    getShopName();
   }
 
   @override
@@ -26,8 +34,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.business_rounded),
-        //TODO: Change this to dynamic name
-        title: const Text("Your Shop"),
+        title: Text(shopName, key: UniqueKey()),
         backgroundColor: Theme.of(context).secondaryHeaderColor,
       ),
       body: SafeArea(

@@ -34,9 +34,11 @@ dependencies:
   path: any
   intl: any
   http: any
-  sqflite: ^2.3.2
-  just_audio: ^0.9.37
+  sqflite: any
+  just_audio: any
+  shared_preferences: any
   flutter_barcode_scanner: any
+  qr_flutter: any
   
 
 dev_dependencies:
@@ -48,7 +50,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

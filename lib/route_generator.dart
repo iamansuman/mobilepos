@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobilepos/pages/home.dart';
-import 'package:mobilepos/pages/onboarding.dart';
+import 'package:mobilepos/pages/onboarding/onboarding.dart';
 import 'package:mobilepos/pages/inventory/inventory_add.dart';
+import 'package:mobilepos/pages/onboarding/usage_policy.dart';
 import 'package:mobilepos/pages/sales/sale_new.dart';
 
 class RouteGenerator {
@@ -13,6 +14,8 @@ class RouteGenerator {
           return const HomePage();
         case '/onboarding':
           return const OnBoarding();
+        case '/usagepolicy':
+          return const UsagePolicy();
         case '/addtoinventory':
           return const AddInventory();
         case '/newsale':
