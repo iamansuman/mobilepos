@@ -51,7 +51,8 @@ class _InventoryState extends State<Inventory> {
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
                   ),
                   title: Text(item.itemName),
-                  subtitle: Text("${item.barcode} | ${item.singleUnitQuantity} | $currencyChar${item.price}", key: UniqueKey()),
+                  subtitle: Text("${item.barcode} | ${item.singleUnitQuantity} | $currencyChar${item.price}",
+                      key: UniqueKey()),
                   trailing: PopupMenuButton(
                     itemBuilder: (context) {
                       return [
@@ -110,7 +111,12 @@ class _InventoryState extends State<Inventory> {
               }),
             );
           } else {
-            return const Center(child: Text('Your warehouse seems empty 🏭'));
+            return const Center(
+              child: Text(
+                'Your warehouse seems empty 🏭',
+                style: TextStyle(fontSize: 20),
+              ),
+            );
           }
         },
       ),
