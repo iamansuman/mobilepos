@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobilepos/pages/inventory/inventory.dart';
 import 'package:mobilepos/pages/sales/sales.dart';
-import 'package:mobilepos/pages/settings/settings.dart';
+// import 'package:mobilepos/pages/settings/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static const List<Widget> screenNavs = [Inventory(), Sales(), Settings()];
+  static const List<Widget> screenNavs = [Inventory(), Sales()]; //, Settings()];
   int currScreen = 1;
   String shopName = "Your Shop";
 
@@ -56,11 +56,12 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.shopping_cart_outlined),
             selectedIcon: Icon(Icons.shopping_cart_rounded),
           ),
-          NavigationDestination(
-            label: "Settings",
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-          ),
+          // NavigationDestination(
+          //   label: "Settings",
+          //   icon: Icon(Icons.settings_outlined),
+          //   selectedIcon: Icon(Icons.settings),
+          // ),
+          //TODO: Undo it for setting page
         ],
         onDestinationSelected: (int index) => setState(() => currScreen = index),
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
