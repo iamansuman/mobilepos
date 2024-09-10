@@ -17,6 +17,7 @@ class _OnBoardingState extends State<OnBoarding> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _shopNameTxTController = TextEditingController();
   final TextEditingController _merchantNameTxTController = TextEditingController();
+  final TextEditingController _merchantContactTxTController = TextEditingController();
   Map<String, dynamic> _countryDataList = {};
   late List<DropdownMenuEntry> _countriesNameList = [];
   final List<String> _countriesAcceptingUPI = ["IN"];
@@ -82,10 +83,24 @@ class _OnBoardingState extends State<OnBoarding> {
               ),
               const SizedBox(height: 20),
               TextFormField(
+                keyboardType: TextInputType.name,
                 controller: _merchantNameTxTController,
                 decoration: const InputDecoration(border: OutlineInputBorder(), label: Text("Merchant Name")),
                 validator: (value) {
                   if (value == null || value == "") return "Merchant Name can't be Empty";
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                keyboardType: TextInputType.phone,
+                controller: _merchantContactTxTController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  label: Text("Merchant Contact (Phone)"),
+                ),
+                validator: (value) {
+                  if (value == null || value == "") return "Merchant Contact can't be Empty";
                   return null;
                 },
               ),
@@ -162,6 +177,8 @@ class _OnBoardingState extends State<OnBoarding> {
                     await prefs.setBool('NEW_USER', false);
                     await prefs.setString('SHOP_NAME', _shopNameTxTController.text);
                     await prefs.setString('MERCHANT_NAME', _merchantNameTxTController.text);
+                    await prefs.setString('MERCHANT_CONTACT', _merchantContactTxTController.text);
+                    await prefs.setString('UPI_QR_DATA', _qrImageData);
                     await prefs.setString('CURR_COUNTRY_DATA', jsonEncode(_countryDataList[_currentCountry]));
                     if (context.mounted) {
                       Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
