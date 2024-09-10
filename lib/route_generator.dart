@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:mobilepos/data_structure.dart';
 import 'package:mobilepos/pages/home.dart';
 import 'package:mobilepos/pages/onboarding/onboarding.dart';
 import 'package:mobilepos/pages/inventory/inventory_add.dart';
 import 'package:mobilepos/pages/onboarding/usage_policy.dart';
+import 'package:mobilepos/pages/sales/sale_details.dart';
 import 'package:mobilepos/pages/sales/sale_new.dart';
+import 'package:mobilepos/pages/sales/sale_receipt.dart';
+import 'package:mobilepos/pages/sales/sales_all.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    // final args = settings.arguments;
+    final args = settings.arguments;
     return MaterialPageRoute(builder: (_) {
       switch (settings.name) {
         case '/':
@@ -18,9 +22,22 @@ class RouteGenerator {
           return const UsagePolicy();
         case '/addtoinventory':
           return const AddInventory();
+        case '/allsales':
+          return const AllSales();
         case '/newsale':
           return const NewSale();
-        //TODO: review
+        case '/receipt':
+          {
+            if (args is Sale) return Receipt(sale: args);
+            return SaleDetails(
+                sale: Sale(timeOfSale: DateTime.now(), receiptNumber: '<N/A>', saleItems: {}, totalAmount: 0));
+          }
+        case '/saledetails':
+          {
+            if (args is Sale) return SaleDetails(sale: args);
+            return SaleDetails(
+                sale: Sale(timeOfSale: DateTime.now(), receiptNumber: '<N/A>', saleItems: {}, totalAmount: 0));
+          }
         default:
           return const HomePage();
       }
