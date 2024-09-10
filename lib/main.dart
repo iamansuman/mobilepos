@@ -4,8 +4,7 @@ import 'package:mobilepos/route_generator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  runApp(App(isNewUser: prefs.getBool('NEW_USER') ?? true));
+  runApp(App(isNewUser: (await SharedPreferences.getInstance()).getBool('NEW_USER') ?? true));
 }
 
 class App extends StatelessWidget {
