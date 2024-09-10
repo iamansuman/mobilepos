@@ -9,7 +9,7 @@ class Sale {
 class Item {
   final String itemName;
   final String barcode;
-  final double price;
+  double price;
   String singleUnitQuantity;
   int quantity;
   Item({
