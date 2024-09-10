@@ -20,8 +20,12 @@ class RouteGenerator {
           return const OnBoarding();
         case '/usagepolicy':
           return const UsagePolicy();
+        case '/inventory':
+          return const HomePage(selScreen: 0);
         case '/addtoinventory':
           return const AddInventory();
+        case '/sales':
+          return const HomePage(selScreen: 1);
         case '/allsales':
           return const AllSales();
         case '/newsale':
@@ -38,6 +42,9 @@ class RouteGenerator {
             return SaleDetails(
                 sale: Sale(timeOfSale: DateTime.now(), receiptNumber: '<N/A>', saleItems: {}, totalAmount: 0));
           }
+        // case '/settings':
+        //   return const HomePage(selScreen: 2);
+        //TODO: Undo this
         default:
           return const HomePage();
       }
