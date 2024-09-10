@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobilepos/data_structure.dart';
 import 'package:mobilepos/posdatabase.dart';
 import 'package:mobilepos/get_barcode.dart';
@@ -14,7 +16,8 @@ class AddInventory extends StatefulWidget {
 }
 
 class _AddInventoryState extends State<AddInventory> {
-  final String currencyChar = '₹'; //TODO: Change currency denotation in settings
+  String currencyChar = '💵';
+  String gs1Prefix = '';
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _barcodeTextController = TextEditingController();
   final TextEditingController _itemNameTextController = TextEditingController();
@@ -26,8 +29,26 @@ class _AddInventoryState extends State<AddInventory> {
   Text descTextBox(String label, {Color? color}) =>
       Text(label, style: TextStyle(fontSize: 12, color: color ?? Colors.grey.shade600));
 
+  Future<void> getCurrecyAndGS1() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final jsonCountryData = jsonDecode(
+        prefs.getString('CURR_COUNTRY_DATA') ?? "{\"currency\": \"$currencyChar\", \"GS1\": \"$gs1Prefix\"}");
+    setState(() {
+      currencyChar = jsonCountryData['currency'];
+      gs1Prefix = jsonCountryData['GS1'];
+    });
+  }
+
+  @override
+  void initState() {
+    getCurrecyAndGS1();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _barcodeTextController.text = gs1Prefix;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -106,6 +127,7 @@ class _AddInventoryState extends State<AddInventory> {
                   child: Text(
                     currencyChar,
                     style: const TextStyle(fontSize: 24),
+                    key: UniqueKey(),
                   ),
                 ),
                 prefixIconConstraints: const BoxConstraints(minHeight: 0, minWidth: 0),

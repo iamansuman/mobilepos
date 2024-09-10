@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobilepos/alertdialog.dart';
 import 'package:mobilepos/data_structure.dart';
 import 'package:mobilepos/posdatabase.dart';
@@ -11,7 +13,21 @@ class Inventory extends StatefulWidget {
 }
 
 class _InventoryState extends State<Inventory> {
-  String currencyChar = '₹'; //TODO: Change currency denotation in settings
+  String currencyChar = '💵';
+
+  Future<void> getCurrency() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      currencyChar =
+          jsonDecode(prefs.getString('CURR_COUNTRY_DATA') ?? "{\"currency\": \"$currencyChar\"}")['currency'];
+    });
+  }
+
+  @override
+  void initState() {
+    getCurrency();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +51,7 @@ class _InventoryState extends State<Inventory> {
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
                   ),
                   title: Text(item.itemName),
-                  subtitle: Text("${item.barcode} | ${item.singleUnitQuantity} | $currencyChar${item.price}"),
+                  subtitle: Text("${item.barcode} | ${item.singleUnitQuantity} | $currencyChar${item.price}", key: UniqueKey()),
                   trailing: PopupMenuButton(
                     itemBuilder: (context) {
                       return [

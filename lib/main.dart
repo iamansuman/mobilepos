@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobilepos/route_generator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobilepos/route_generator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

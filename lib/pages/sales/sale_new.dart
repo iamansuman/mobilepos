@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilepos/data_structure.dart';
 import 'package:mobilepos/get_barcode.dart';
 import 'package:mobilepos/posdatabase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewSale extends StatefulWidget {
   const NewSale({super.key});
@@ -13,10 +16,18 @@ class NewSale extends StatefulWidget {
 }
 
 class _NewSaleState extends State<NewSale> {
-  String currencyChar = '₹'; //TODO: Change currency denotation in settings
+  String currencyChar = '💵';
   final DateTime currentDateTime = DateTime.now();
   Map<String, Item> saleItems = {};
   Sale newSale = Sale(timeOfSale: DateTime.now(), receiptNumber: '', saleItems: {}, totalAmount: 0);
+
+  Future<void> getCurrency() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      currencyChar =
+          jsonDecode(prefs.getString('CURR_COUNTRY_DATA') ?? "{\"currency\": \"$currencyChar\"}")['currency'];
+    });
+  }
 
   @override
   void initState() {
@@ -27,6 +38,7 @@ class _NewSaleState extends State<NewSale> {
       saleItems: saleItems,
       totalAmount: 0,
     );
+    getCurrency();
   }
 
   @override
@@ -114,7 +126,7 @@ class _NewSaleState extends State<NewSale> {
         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
       ),
       title: Text(item.itemName),
-      subtitle: Text("$barcode | ${item.singleUnitQuantity} | $currencyChar${item.price}"),
+      subtitle: Text("$barcode | ${item.singleUnitQuantity} | $currencyChar${item.price}", key: UniqueKey()),
       trailing: PopupMenuButton(
         itemBuilder: (context) {
           return [
