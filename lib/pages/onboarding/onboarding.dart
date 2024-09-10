@@ -148,6 +148,7 @@ class _OnBoardingState extends State<OnBoarding> {
               //   onPressed: () => Navigator.pushNamed(context, '/usagepolicy'),
               // ),
               // const SizedBox(height: 20),
+              //TODO: usage policy
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shadowColor: Colors.grey.shade300,

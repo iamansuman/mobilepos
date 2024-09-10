@@ -20,6 +20,7 @@ class RouteGenerator {
           return const AddInventory();
         case '/newsale':
           return const NewSale();
+        //TODO: review
         default:
           return const HomePage();
       }
