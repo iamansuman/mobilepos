@@ -14,7 +14,7 @@ class _SettingsState extends State<Settings> {
       body: Center(
         //TODO:
         child: Text(
-          "In Development",
+          "In Development 🛠",
           style: TextStyle(fontSize: 20),
         ),
       ),
