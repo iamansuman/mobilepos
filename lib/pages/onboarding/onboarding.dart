@@ -181,7 +181,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     await prefs.setString('UPI_QR_DATA', _qrImageData);
                     await prefs.setString('CURR_COUNTRY_DATA', jsonEncode(_countryDataList[_currentCountry]));
                     if (context.mounted) {
-                      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+                      Navigator.pushNamedAndRemoveUntil(context, '/inventory', (route) => false);
                     }
                   }
                 },
