@@ -22,12 +22,11 @@ class _ReceiptState extends State<Receipt> {
   Future<void> getMerchantData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      shopName = prefs.getString('SHOP_NAME') ?? shopName;
-      merchantName = prefs.getString('MERCHANT_NAME') ?? merchantName;
-      merchantContact = prefs.getString('MERCHANT_CONTACT') ?? merchantContact;
-      upiQRData = prefs.getString('UPI_QR_DATA') ?? upiQRData;
-      currencyChar =
-          jsonDecode(prefs.getString('CURR_COUNTRY_DATA') ?? "{\"currency\": \"$currencyChar\"}")['currency'];
+      shopName = prefs.getString('SETTINGS_MERCHANTDATA_SHOPNAME') ?? shopName;
+      merchantName = prefs.getString('SETTINGS_MERCHANTDATA_MERCHANTNAME') ?? merchantName;
+      merchantContact = prefs.getString('SETTINGS_MERCHANTDATA_MERCHANTCONTACT') ?? merchantContact;
+      upiQRData = prefs.getString('SETTINGS_UPI_QRDATA') ?? upiQRData;
+      currencyChar = prefs.getString('SETTINGS_MERCHANTDATA_CURRENCY') ?? currencyChar;
     });
   }
 

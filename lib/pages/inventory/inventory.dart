@@ -18,8 +18,7 @@ class _InventoryState extends State<Inventory> {
   Future<void> getCurrency() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      currencyChar =
-          jsonDecode(prefs.getString('CURR_COUNTRY_DATA') ?? "{\"currency\": \"$currencyChar\"}")['currency'];
+      currencyChar = prefs.getString('SETTINGS_MERCHANTDATA_CURRENCY') ?? currencyChar;
     });
   }
 

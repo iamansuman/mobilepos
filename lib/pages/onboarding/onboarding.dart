@@ -19,8 +19,8 @@ class _OnBoardingState extends State<OnBoarding> {
   final TextEditingController _merchantNameTxTController = TextEditingController();
   final TextEditingController _merchantContactTxTController = TextEditingController();
   Map<String, dynamic> _countryDataList = {};
-  late List<DropdownMenuEntry> _countriesNameList = [];
-  final List<String> _countriesAcceptingUPI = ["IN"];
+  late List<DropdownMenuItem> _countriesNameList = [];
+  late List _countriesAcceptingUPI = [];
   String _currentCountry = "";
   String _qrImageData = "";
 
@@ -30,6 +30,11 @@ class _OnBoardingState extends State<OnBoarding> {
     loadCountriesData().whenComplete(() => setState(() {
           _countriesNameList;
         }));
+    loadCountriesAcceptingUPI().whenComplete(() => setState(
+          () {
+            _countriesAcceptingUPI;
+          },
+        ));
   }
 
   Future<void> loadCountriesData() async {
@@ -40,14 +45,23 @@ class _OnBoardingState extends State<OnBoarding> {
         () {
           _countryDataList = countryDataList;
           _countriesNameList = countryDataList.values
-              .map<DropdownMenuEntry>(
-                (countryData) => DropdownMenuEntry(value: countryData['code'], label: countryData['name']),
+              .map<DropdownMenuItem>(
+                (countryData) => DropdownMenuItem(
+                    value: countryData['code'], child: Text("(${countryData['code']}) ${countryData['name']}")),
               )
               .toList();
           _currentCountry = countryDataList.values.first['code'];
         },
       ),
     );
+  }
+
+  Future<void> loadCountriesAcceptingUPI() async {
+    String jsonData = await rootBundle.loadString('assets/upi_acceptance.json');
+    List countriesAcceptingUPI = jsonDecode(jsonData);
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+          _countriesAcceptingUPI = countriesAcceptingUPI;
+        }));
   }
 
   @override
@@ -75,7 +89,11 @@ class _OnBoardingState extends State<OnBoarding> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: _shopNameTxTController,
-                decoration: const InputDecoration(border: OutlineInputBorder(), label: Text("Shop Name")),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.store),
+                  label: Text("Shop Name"),
+                ),
                 validator: (value) {
                   if (value == null || value == "") return "Shop Name can't be Empty";
                   return null;
@@ -85,7 +103,11 @@ class _OnBoardingState extends State<OnBoarding> {
               TextFormField(
                 keyboardType: TextInputType.name,
                 controller: _merchantNameTxTController,
-                decoration: const InputDecoration(border: OutlineInputBorder(), label: Text("Merchant Name")),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.person_4_rounded),
+                  label: Text("Merchant Name"),
+                ),
                 validator: (value) {
                   if (value == null || value == "") return "Merchant Name can't be Empty";
                   return null;
@@ -97,6 +119,7 @@ class _OnBoardingState extends State<OnBoarding> {
                 controller: _merchantContactTxTController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.phone_rounded),
                   label: Text("Merchant Contact (Phone)"),
                 ),
                 validator: (value) {
@@ -105,20 +128,23 @@ class _OnBoardingState extends State<OnBoarding> {
                 },
               ),
               const SizedBox(height: 20),
-              DropdownMenu(
+              DropdownButtonFormField(
                 key: UniqueKey(),
-                width: 360,
-                menuHeight: 450,
-                label: const Text("Select Your Country"),
-                dropdownMenuEntries: _countriesNameList,
-                enableSearch: true,
-                initialSelection: _currentCountry,
-                onSelected: (value) {
+                menuMaxHeight: 350,
+                items: _countriesNameList,
+                value: _currentCountry,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.public),
+                  labelText: 'Select Your Country',
+                ),
+                onChanged: (value) {
                   setState(() {
                     _currentCountry = value!;
                     _qrImageData = "";
                   });
                 },
+                isExpanded: true,
               ),
               const SizedBox(height: 20),
               (_countriesAcceptingUPI.contains(_currentCountry))
@@ -175,11 +201,14 @@ class _OnBoardingState extends State<OnBoarding> {
                   if (_formKey.currentState!.validate() && _currentCountry != "" && _countryDataList != {}) {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     await prefs.setBool('NEW_USER', false);
-                    await prefs.setString('SHOP_NAME', _shopNameTxTController.text);
-                    await prefs.setString('MERCHANT_NAME', _merchantNameTxTController.text);
-                    await prefs.setString('MERCHANT_CONTACT', _merchantContactTxTController.text);
-                    await prefs.setString('UPI_QR_DATA', _qrImageData);
-                    await prefs.setString('CURR_COUNTRY_DATA', jsonEncode(_countryDataList[_currentCountry]));
+                    await prefs.setString('SETTINGS_MERCHANTDATA_SHOPNAME', _shopNameTxTController.text);
+                    await prefs.setString('SETTINGS_MERCHANTDATA_MERCHANTNAME', _merchantNameTxTController.text);
+                    await prefs.setString('SETTINGS_MERCHANTDATA_MERCHANTCONTACT', _merchantContactTxTController.text);
+                    await prefs.setString('SETTINGS_MERCHANTDATA_COUNTRY', _currentCountry);
+                    await prefs.setString(
+                        'SETTINGS_MERCHANTDATA_CURRENCY', _countryDataList[_currentCountry]['currency']);
+                    await prefs.setString('SETTINGS_MERCHANTDATA_GS1', _countryDataList[_currentCountry]['GS1']);
+                    await prefs.setString('SETTINGS_UPI_QRDATA', _qrImageData);
                     if (context.mounted) {
                       Navigator.pushNamedAndRemoveUntil(context, '/inventory', (route) => false);
                     }

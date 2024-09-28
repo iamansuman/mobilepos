@@ -31,11 +31,11 @@ class _AddInventoryState extends State<AddInventory> {
 
   Future<void> getCurrecyAndGS1() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final jsonCountryData = jsonDecode(
-        prefs.getString('CURR_COUNTRY_DATA') ?? "{\"currency\": \"$currencyChar\", \"GS1\": \"$gs1Prefix\"}");
+    gs1Prefix = prefs.getString('SETTINGS_MERCHANTDATA_GS1') ?? currencyChar;
+    currencyChar = prefs.getString('SETTINGS_MERCHANTDATA_CURRENCY') ?? currencyChar;
     setState(() {
-      currencyChar = jsonCountryData['currency'];
-      gs1Prefix = jsonCountryData['GS1'];
+      currencyChar;
+      gs1Prefix;
     });
   }
 

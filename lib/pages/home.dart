@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> getShopName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() => shopName = prefs.getString('SHOP_NAME') ?? shopName);
+    setState(() => shopName = prefs.getString('SETTINGS_MERCHANTDATA_SHOPNAME') ?? shopName);
   }
 
   @override
