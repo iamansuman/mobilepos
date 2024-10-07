@@ -12,7 +12,7 @@ Flutter version: 3.10.6
 Android min SDK: 28  
 Android target SDK: 34  
 
-Follow Flutter guidelines for builds for [android](https://docs.flutter.dev/deployment/android) & [ios](https://docs.flutter.dev/deployment/android)
+Follow Flutter guidelines for builds for [android](https://docs.flutter.dev/deployment/android) & [ios](https://docs.flutter.dev/deployment/ios)
 
 Build command (android apk): `flutter build apk`
 
